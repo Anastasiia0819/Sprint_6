@@ -47,8 +47,15 @@ class OrderPage:
 
     # клик на Заказать
     def click_order_next_button(self):
-        self.driver.find_element(*OrderPageLocators.order_next_button)
+        self.driver.find_element(*OrderPageLocators.order_next_button).click()
 
+    #клик на логотип Самокат
+    def click_logo_samokat(self):
+        self.driver.find_element(*OrderPageLocators.samokat_logo).click()
+
+    # клик на логотип Яндекс
+    def click_logo_yandex(self):
+        self.driver.find_element(*OrderPageLocators.yandex_logo).click()
 
 
 
