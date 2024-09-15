@@ -14,9 +14,8 @@ class TestOrderPage:
                     "click_order_middle_page_button"]
     telephone_number = ["+79876665566", "89109992233"]
 
-    @pytest.mark.parametrize("order_button_method", order_button)
-    @pytest.mark.parametrize("telephone_number", telephone_number)
-
+    @pytest.mark.parametrize("order_button_method", order_button,  ids=[u"Кнопка Заказать в хедере", u"Кнопка Заказать в середине страницы"])
+    @pytest.mark.parametrize("telephone_number", telephone_number, ids=[u"Телефон: +79876665566", u"Телефон: 89109992233"])
     @allure.feature("Оформление заказа")
     # Оформить заказ
     def test_order_page(self, driver, order_button_method, telephone_number):

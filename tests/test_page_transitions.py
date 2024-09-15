@@ -19,6 +19,7 @@ class TestTransitionsPage:
             transition_page_yandex.wait_open_new_tab()
             assert driver.current_url == Config.URL_dzen, f"Ожидался URL: {Config.URL_dzen}, но был: {driver.current_url}"
 
+    @allure.feature("Переходы на страницы")
     def test_transition_logo_samokat(self, driver):
         transition_page_samokat = TransitionsPage(driver)
         with allure.step("Открыть страницу Заказа"):

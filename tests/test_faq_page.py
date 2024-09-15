@@ -16,7 +16,9 @@ class TestFaq:
                               (QuestionsPagesLocators.question_5, QuestionsPagesLocators.answer_5_text, "Пока что нет! Но если что-то срочное — всегда можно позвонить в поддержку по красивому номеру 1010."),
                               (QuestionsPagesLocators.question_6, QuestionsPagesLocators.answer_6_text, "Самокат приезжает к вам с полной зарядкой. Этого хватает на восемь суток — даже если будете кататься без передышек и во сне. Зарядка не понадобится."),
                               (QuestionsPagesLocators.question_7, QuestionsPagesLocators.answer_7_text, "Да, пока самокат не привезли. Штрафа не будет, объяснительной записки тоже не попросим. Все же свои."),
-                              (QuestionsPagesLocators.question_8, QuestionsPagesLocators.answer_8_text, "Да, обязательно. Всем самокатов! И Москве, и Московской области.")])
+                              (QuestionsPagesLocators.question_8, QuestionsPagesLocators.answer_8_text, "Да, обязательно. Всем самокатов! И Москве, и Московской области.")],
+                             ids=[u"Тест вопроса 1", u"Тест вопроса 2", u"Тест вопроса 3", u"Тест вопроса 4", u"Тест вопроса 5", u"Тест вопроса 6", u"Тест вопроса 7", u"Тест вопроса 8"])
+
     @allure.feature('Раздел: Вопросы о важном')
     def test_check_first_question(self, driver, question_locator, answer_locator, expected_answer):
         #создать объект класса раздела с вопросами
