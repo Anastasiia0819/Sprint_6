@@ -3,6 +3,7 @@ from selenium import webdriver
 from pages.faq_page import QuestionsPages
 import time
 from locators.faq_page_locators import QuestionsPagesLocators
+import allure
 
 
 class TestFaq:
@@ -16,28 +17,23 @@ class TestFaq:
                               (QuestionsPagesLocators.question_6, QuestionsPagesLocators.answer_6_text, "Самокат приезжает к вам с полной зарядкой. Этого хватает на восемь суток — даже если будете кататься без передышек и во сне. Зарядка не понадобится."),
                               (QuestionsPagesLocators.question_7, QuestionsPagesLocators.answer_7_text, "Да, пока самокат не привезли. Штрафа не будет, объяснительной записки тоже не попросим. Все же свои."),
                               (QuestionsPagesLocators.question_8, QuestionsPagesLocators.answer_8_text, "Да, обязательно. Всем самокатов! И Москве, и Московской области.")])
-
-    #1 вопрос
+    @allure.feature('Раздел: Вопросы о важном')
     def test_check_first_question(self, driver, question_locator, answer_locator, expected_answer):
         #создать объект класса раздела с вопросами
         faq_page = QuestionsPages(driver)
-
-        #ожидаем загрузку кнопки Загрузка
-        faq_page.wait_for_title_faq()
-
-        #скролл до загололвка
-        faq_page.scroll_question_title()
+        with allure.step("ожидание загрузки кнопки Загрузка"):
+            faq_page.wait_for_title_faq()
+        with allure.step("скролл до загололвка"):
+            faq_page.scroll_question_title()
         time.sleep(3)
 
-        #клик и проверка на наличие овета
-        faq_page.click_question(question_locator)
-        #faq_page.driver.find_element(question_locator).click()
+        with allure.step("клик и проверка на наличие ответа"):
+            faq_page.click_question(question_locator)
         time.sleep(3)
+        with allure.step("Проверка текста ответа"):
+            actual_answer_text = faq_page.get_text_answer(answer_locator)
+            assert actual_answer_text == expected_answer
 
-        actual_answer_text = faq_page.get_text_answer(answer_locator)
-        assert actual_answer_text == expected_answer
-
-        #assert expected_answer_text == "Сутки — 400 рублей. Оплата курьеру — наличными или картой."
 
 
 
