@@ -4,110 +4,120 @@ import pytest
 from locators.order_page_locators import OrderPageLocators
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
+from src.config import Config
+import allure
+from pages.base_page import BasePage
+from src.config import Config
 
-class OrderPage:
+
+class OrderPage(BasePage):
 
     def __init__(self, driver: WebDriver):
-        self.driver = driver
+        super().__init__(driver)
 
-    #клик на Заказать вверху страницы
-    def click_order_header_button(self):
-        self.driver.find_element(*OrderPageLocators.order_header_button).click()
+    @allure.step("open page('https://qa-scooter.praktikum-services.ru/order')")
+    #открыть страницу
+    def open_page(self):
+        self.navigate(Config.URL_order)
 
-    # клик на Заказать по середине страницы
-    def click_order_middle_page_button(self):
-        order_middle_page_button = self.driver.find_element(*OrderPageLocators.order_middle_page_button)
-        self.driver.execute_script("arguments[0].scrollIntoView();", order_middle_page_button)
-        WebDriverWait(self.driver, 30).until(expected_conditions.element_to_be_clickable(OrderPageLocators.order_middle_page_button))
-        order_middle_page_button.click()
 
     #ожидаем кнопку Далее
+    @allure.step("ожидаем кнопку Далее")
     def wait_next_button(self):
-        WebDriverWait(self.driver, 15).until(expected_conditions.visibility_of_element_located(OrderPageLocators.next_button))
+        self.wait_for_element_visible(OrderPageLocators.next_button)
 
     # заполнить поле "Имя"
+    @allure.step("заполнить поле Имя")
     def set_name(self, name):
-        self.driver.find_element(*OrderPageLocators.name_field).send_keys(name)
+        self.enter_text(OrderPageLocators.name_field, name)
 
     #заполнить поле "Фамилия"
+    @allure.step('заполнить поле "Фамилия"')
     def set_surname(self, surname):
-        self.driver.find_element(*OrderPageLocators.surname_field).send_keys(surname)
+        self.enter_text(OrderPageLocators.surname_field, surname)
 
     # заполнить поле Станция метро
+    @allure.step("заполнить поле Станция метро")
     def set_metro(self, metro):
-        self.driver.find_element(*OrderPageLocators.metro_field).send_keys(metro) #ввели название станции
+        self.enter_text(OrderPageLocators.metro_field, metro) #ввели название станции
 
     # Ожидание появления выпадающего списка и кликнуть на соответсвующую станцию
+    @allure.step("Ожидание появления выпадающего списка и кликнуть на соответсвующую станцию")
     def click_metro_station_on_list(self, metro):
-        list_metro_station = WebDriverWait(self.driver, 10).until(expected_conditions.visibility_of_all_elements_located(OrderPageLocators.list_station))
+        list_metro_station = self.wait_for_elements_visible(OrderPageLocators.list_station)
         for station in list_metro_station:
             if station.text == metro:
                 station.click() #кликнуть
 
     # заполнить поле Номер телефона
+    @allure.step("заполнить поле Номер телефона")
     def set_telephone_number(self, number):
-        self.driver.find_element(*OrderPageLocators.telephon_number_field).send_keys(number)
+        self.enter_text(OrderPageLocators.telephon_number_field, number)
 
     # клик на Далее
+    @allure.step("клик на Далее")
     def click_next_button(self):
-        self.driver.find_element(*OrderPageLocators.next_button).click()
+        self.click_element(OrderPageLocators.next_button)
 
     #ожидание кнопки Заказать (которая на странице "Про аренду")
+    @allure.step('ожидание кнопки Заказать (которая на странице "Про аренду")')
     def wait_order_nex_button(self):
-        WebDriverWait(self.driver, 15).until(expected_conditions.visibility_of_element_located(OrderPageLocators.order_next_button))
+        self.wait_for_element_visible(OrderPageLocators.order_next_button)
 
     # заполнить поле Когда привезти самокат
+    @allure.step("заполнить поле Когда привезти самокат")
     def set_when_order(self, data_order):
-        self.driver.find_element(*OrderPageLocators.when_order_field).send_keys(data_order)
+        self.enter_text(OrderPageLocators.when_order_field, data_order)
 
     #клик на календарь
+    @allure.step("клик на календарь")
     def click_calendar(self):
-        self.driver.find_element(*OrderPageLocators.data_calendar).click()
+        self.click_element(OrderPageLocators.data_calendar)
 
     # клик на поле срок аренды
+    @allure.step("клик на поле срок аренды")
     def click_rent_period(self):
-        #rent_field = self.driver.find_element(*OrderPageLocators.rental_period_field)
-        #self.driver.execute_script("arguments[0].click();", rent_field)
-        self.driver.find_element(*OrderPageLocators.rental_period_field).click()
+        self.click_element(OrderPageLocators.rental_period_field)
 
     #ожидание списка с опциями срока аренды
+    @allure.step("ожидание списка с опциями срока аренды")
     def wait_list_rent_options(self):
-        WebDriverWait(self.driver, 10).until(expected_conditions.visibility_of_all_elements_located(OrderPageLocators.list_period_option))
+        self.wait_for_element_visible(OrderPageLocators.list_period_option)
 
     #кликнуть на одно из значений списка (например,"сутки")
+    @allure.step('кликнуть на одно из значений списка (например,"сутки")')
     def click_rent_option(self):
-        self.driver.find_element(*OrderPageLocators.choice_period).click()
+        self.click_element(OrderPageLocators.choice_period)
 
     # клик на Заказать
+    @allure.step("клик на Заказать")
     def click_order_next_button(self):
-        self.driver.find_element(*OrderPageLocators.order_next_button).click()
+        self.click_element(OrderPageLocators.order_next_button)
 
     #ожидаем модальное окно для подтверждения заказа (кнопка Да)
+    @allure.step("ожидаем модальное окно для подтверждения заказа (кнопка Да)")
     def wait_yes_button(self):
-        WebDriverWait(self.driver, 15).until(expected_conditions.visibility_of_element_located(OrderPageLocators.yes_button))
+        self.wait_for_element_visible(OrderPageLocators.yes_button)
 
     # клик на Да
+    @allure.step("клик на Да")
     def click_yes_button(self):
-        self.driver.find_element(*OrderPageLocators.yes_button).click()
+        self.click_element(OrderPageLocators.yes_button)
 
     #ожидание загрузки модального окна с подтвеждением заказа
+    @allure.step("ожидание загрузки модального окна с подтвеждением заказа")
     def wait_modal_order_confirmation(self):
-        WebDriverWait(self.driver, 15).until(expected_conditions.visibility_of_element_located(OrderPageLocators.order_done))
+        self.wait_for_element_visible(OrderPageLocators.order_done)
 
     #получить текст "Заказ оформлен"
+    @allure.step('получить текст "Заказ оформлен"')
     def get_test_order_confirmation(self):
-        full_order_done_text = self.driver.find_element(*OrderPageLocators.order_done).text
+        full_order_done_text = self.find_element(OrderPageLocators.order_done).text
         print(f"Текст, найденный на странице: {full_order_done_text}")
         text_for_check = full_order_done_text.splitlines()[0]
         return text_for_check
 
-    #клик на логотип Самокат
-    def click_logo_samokat(self):
-        self.driver.find_element(*OrderPageLocators.samokat_logo).click()
 
-    # клик на логотип Яндекс
-    def click_logo_yandex(self):
-        self.driver.find_element(*OrderPageLocators.yandex_logo).click()
 
 
 
